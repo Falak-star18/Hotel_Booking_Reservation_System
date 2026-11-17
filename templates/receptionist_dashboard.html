@@ -1,0 +1,287 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Receptionist Dashboard | Breezy Palms</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+          <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body class="receptionist-dashboard-page">
+
+    <div class="receptionist-layout">
+
+        <!-- Sidebar -->
+        <aside class="receptionist-sidebar">
+
+            <div class="sidebar-brand">
+                <h2>
+                    <span class="breezy">Breezy</span>
+                    <span class="palms">Palms</span>
+                </h2>
+                <p>STAY • RELAX • ENJOY</p>
+            </div>
+
+            <nav class="sidebar-navigation">
+
+                <a href="{{ url_for('receptionist_dashboard') }}"
+                   class="sidebar-link active">
+                    <span>⌂</span>
+                    Dashboard
+                </a>
+
+                <a href="{{ url_for('housekeeping_dashboard') }}"
+                   class="sidebar-link">
+                    <span>▤</span>
+                    Housekeeping Dashboard
+                </a>
+
+                <a href="{{ url_for('home') }}"
+                   class="sidebar-link">
+                    <span>＋</span>
+                    New Reservation
+                </a>
+
+                <a href="#recent-reservations"
+                   class="sidebar-link">
+                    <span>▤</span>
+                    View Reservations
+                </a>
+
+                <a href="{{ url_for('guest_management') }}"
+                   class="sidebar-link">
+                   <span>♙</span>
+                   Guest Management
+                </a>
+
+            </nav>
+
+            <div class="sidebar-bottom">
+                <a href="{{ url_for('staff_logout') }}"
+                   class="sidebar-link logout-link">
+                    <span>↪</span>
+                    Logout
+                </a>
+            </div>
+
+        </aside>
+
+
+        <!-- Main Dashboard -->
+        <main class="receptionist-main">
+
+            <!-- Header -->
+            <header class="receptionist-header">
+
+                <div class="header-heading">
+                    <p class="dashboard-eyebrow">STAFF WORKSPACE</p>
+                    <h1>Receptionist Dashboard</h1>
+                    <p>Manage guest reservations and daily hotel operations.</p>
+                </div>
+
+                <div class="header-profile">
+                    <div class="profile-details">
+                        <strong>{{ session.get('full_name') }}</strong>
+                        <span>{{ session.get('role') }}</span>
+                    </div>
+
+                    <a href="{{ url_for('staff_logout') }}"
+                       class="header-logout">
+                        Logout
+                    </a>
+                </div>
+
+            </header>
+
+
+            <!-- Dashboard Statistics -->
+            <section class="receptionist-stats">
+
+                <div class="receptionist-stat-card">
+                    <span class="stat-label">Total Reservations</span>
+                    <h2>{{ total_reservations }}</h2>
+                    <p>Bookings recorded</p>
+                </div>
+
+                <div class="receptionist-stat-card">
+                    <span class="stat-label">Total Guests</span>
+                    <h2>{{ total_guests }}</h2>
+                    <p>Registered occupants</p>
+                </div>
+
+                <div class="receptionist-stat-card">
+                    <span class="stat-label">Available Rooms</span>
+                    <h2>{{ available_rooms }}</h2>
+                    <p>Available today</p>
+                </div>
+
+                <div class="receptionist-stat-card">
+                    <span class="stat-label">Currently Occupied</span>
+                    <h2>{{ occupied_rooms }}</h2>
+                    <p>Checked-in reservations</p>
+                </div>
+
+            </section>
+
+
+            <!-- Quick Actions -->
+            <section class="receptionist-actions">
+
+                <div class="receptionist-section-heading">
+                    <div>
+                        <h2>Quick Actions</h2>
+                        <p>Frequently used receptionist operations</p>
+                    </div>
+                </div>
+
+                <div class="action-grid">
+
+                    <a href="{{ url_for('home') }}"
+                       class="receptionist-action-card">
+                        <span class="action-icon">＋</span>
+                        <div>
+                            <h3>New Reservation</h3>
+                            <p>Check room availability and create a reservation.</p>
+                        </div>
+                        <span class="action-arrow">→</span>
+                    </a>
+
+                    <a href="#recent-reservations"
+                       class="receptionist-action-card">
+                        <span class="action-icon">▤</span>
+                        <div>
+                            <h3>View Reservations</h3>
+                            <p>Review recent guest bookings and their status.</p>
+                        </div>
+                        <span class="action-arrow">→</span>
+                    </a>
+
+                    <a href="{{ url_for('guest_management') }}"
+                       class="receptionist-action-card">
+                        <span class="action-icon">♙</span>
+                        <div>
+                            <h3>Guest Management</h3>
+                            <p>View guest and occupant information.</p>
+                        </div>
+                        <span class="action-arrow">→</span>
+                    </a>
+
+                </div>
+
+            </section>
+
+
+            <!-- Recent Reservations -->
+            <section class="recent-reservations"
+                     id="recent-reservations">
+
+                <div class="receptionist-section-heading">
+                    <div>
+                        <h2>Recent Reservations</h2>
+                        <p>Latest 10 bookings recorded by the hotel</p>
+                    </div>
+                </div>
+
+                <div class="table-container">
+
+                    <table class="receptionist-table">
+
+                        <thead>
+                            <tr>
+                                <th>Booking Reference</th>
+                                <th>Guest Name</th>
+                                <th>Room</th>
+                                <th>Check-in</th>
+                                <th>Check-out</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                    
+                        <tbody>
+                    
+                            {% for reservation in recent_reservations %}
+                    
+                            <tr>
+                                <td>{{ reservation.booking_reference }}</td>
+                                <td>{{ reservation.guest_name }}</td>
+                                <td>{{ reservation.room_number }}</td>
+                                <td>{{ reservation.checkin_date }}</td>
+                                <td>{{ reservation.checkout_date }}</td>
+                    
+                                <td>
+                                    <span class="reservation-status
+                                        {{ reservation.booking_status|lower|replace(' ', '-') }}">
+                                        {{ reservation.booking_status }}
+                                    </span>
+                                </td>
+                    
+                                <td>
+
+                                    {% if reservation.booking_status == 'Confirmed' %}
+                                
+                                        <form action="{{ url_for('checkin_guest', reservation_id=reservation.reservation_id) }}"
+                                              method="POST"
+                                              onsubmit="return confirm('Are you sure you want to check in this guest?');">
+                                
+                                            <button type="submit" class="checkin-button">
+                                                Check In
+                                            </button>
+                                
+                                        </form>
+                                
+                                    {% elif reservation.booking_status == 'Checked-in' %}
+                                
+                                        <form action="{{ url_for('checkout_guest', reservation_id=reservation.reservation_id) }}"
+                                              method="POST"
+                                              onsubmit="return confirm('Are you sure you want to check out this guest?');">
+                                
+                                            <button type="submit" class="checkout-button">
+                                                Check Out
+                                            </button>
+                                
+                                        </form>
+                                
+                                    {% else %}
+                                
+                                        <span>—</span>
+                                
+                                    {% endif %}
+                                
+                                </td>
+                            </tr>
+                    
+                            {% else %}
+                    
+                            <tr>
+                                <td colspan="7" class="empty-table">
+                                    No reservations found.
+                                </td>
+                            </tr>
+                    
+                            {% endfor %}
+                    
+                        </tbody>
+                    
+                    </table>
+
+                </div>
+
+            </section>
+
+            <footer class="receptionist-footer">
+                © Breezy Palms | Receptionist Workspace
+            </footer>
+
+        </main>
+
+    </div>
+
+</body>
+</html>
+

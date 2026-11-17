@@ -1,0 +1,424 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Breezy Palms | Goa</title>
+
+    <!-- Link CSS File -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- ----------------------------------------
+         1. Navigation Bar
+    ---------------------------------------- -->
+
+    <header class="navbar">
+
+        <div class="logo">
+            <img src="{{ url_for('static', filename='images/logo.png') }}"
+                 alt="Breezy Palms Logo"
+                 class="palm-logo">
+        </div>
+
+        <nav class="nav-links">
+            <a href="#home">Home</a>
+            <a href="#rooms">Rooms</a>
+            <a href="#facilities">Facilities</a>
+            <a href="#about">About</a>
+            <a href="#contact">Contact</a>
+        </nav>
+
+        <div class="nav-login">
+            {% if guest_name %}
+                <a href="{{ url_for('my_bookings') }}" class="login-btn">
+                    Welcome, {{ guest_name }}
+                </a>
+                <a href="{{ url_for('guest_logout') }}" class="login-btn">Logout</a>
+            {% else %}
+                <a href="{{ url_for('guest_login') }}" class="login-btn">Login</a>
+            {% endif %}
+        </div>
+        
+    </header>
+
+    
+<!-- ----------------------------------------
+     2. Hero Section
+---------------------------------------- -->
+
+<section class="hero" id="home">
+
+    <div class="hero-content">
+
+        <h1 class="hotel-name">
+            <span class="breezy">Breezy</span>
+            <span class="palms">Palms</span>
+        </h1>
+    
+        <h2>Experience Comfort by the Sea</h2>
+
+        <p>
+            Discover a relaxing getaway with beautiful surroundings,
+            comfortable rooms and memorable experiences.
+        </p>
+
+        <div class="hero-buttons">
+
+            <a href="#rooms" class="primary-btn">
+                Explore Rooms
+            </a>
+
+            <a href="{{ url_for('guest_login') if not guest_name else '#booking' }}"
+               class="secondary-btn"
+               {% if not guest_name %}
+               onclick="event.preventDefault(); showLoginPopup();"
+               {% endif %}>
+                Book Your Stay
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ----------------------------------------
+     3. Booking Search Section
+---------------------------------------- -->
+
+<section class="booking-section" id="booking">
+
+    <div class="booking-container">
+
+        <div class="booking-heading">
+            <h2>Plan Your Perfect Stay</h2>
+            <p>Find the perfect room for your getaway.</p>
+        </div>
+
+        <form class="booking-form" action="/check-availability" method="POST">
+
+            <div class="booking-field">
+                <label for="checkin">Check-in</label>
+                <input type="date" id="checkin" name="checkin_date" required>
+            </div>
+
+            <div class="booking-field">
+                <label for="checkout">Check-out</label>
+                <input type="date" id="checkout" name="checkout_date" required>
+            </div>
+
+            <div class="booking-field">
+                <label for="guests">Guests</label>
+                <select id="guests" name="guests" required>
+                    <option value="1">1 Guest</option>
+                    <option value="2" selected>2 Guests</option>
+                    <option value="3">3 Guests</option>
+                    <option value="4">4 Guests</option>
+                    <option value="5">5 Guests</option>
+                    <option value="6">6 Guests</option>
+                    <option value="7">7 Guests</option>
+                    <option value="8">8 Guests</option>
+                </select>
+            </div>
+
+            <div class="booking-field">
+                <label for="room-category">Room Category</label>
+            
+                <select id="room-category" name="category_id" required>
+            
+                    <option value="">Select a Room</option>
+            
+                    {% for room in room_categories %}
+            
+                        <option value="{{ room['category_id'] }}">
+                            {{ room["category_name"] }}
+                        </option>
+            
+                    {% endfor %}
+            
+                </select>
+            </div>
+
+            <button type="submit" class="availability-btn">
+                Check Availability
+            </button>
+
+        </form>
+
+    </div>
+
+</section>
+
+<!-- ----------------------------------------
+     4. Room Categories Section
+---------------------------------------- -->
+
+<section class="rooms-section" id="rooms">
+
+    <div class="section-heading">
+        <h2>Explore Our Rooms</h2>
+        <p>Choose the perfect space for your comfortable stay.</p>
+    </div>
+
+    <div class="rooms-container">
+
+        {% for room in room_categories %}
+
+        <div class="room-card">
+
+            <!-- Room Images -->
+            {% if room["category_name"] == "Standard Room" %}
+
+                <img src="https://images.unsplash.com/photo-1611892440504-42a792e24d32"
+                     alt="Standard Room">
+
+            {% elif room["category_name"] == "Deluxe Room" %}
+
+                <img src="https://images.unsplash.com/photo-1590490360182-c33d57733427"
+                     alt="Deluxe Room">
+
+            {% elif room["category_name"] == "Premium Sea-View Room" %}
+
+                <img src="https://images.unsplash.com/photo-1578683010236-d716f9a3f461"
+                     alt="Premium Sea-View Room">
+
+            {% elif room["category_name"] == "Family Suite" %}
+
+                <img src="{{ url_for('static', filename='images/family-suite.png') }}"
+                     alt="Family Suite">
+
+            {% endif %}
+
+            <div class="room-details">
+
+                <!-- Room Name -->
+                <h3>{{ room["category_name"] }}</h3>
+
+                <!-- Room Description -->
+                <p>{{ room["description"] }}</p>
+
+                <div class="room-facilities">
+                    <span>☕ Complimentary Breakfast</span>
+                    <span>✓ Free Wi-Fi</span>
+                    <span>✓ Free Parking</span>
+                    <span>✓ Laundry Service</span>
+                    <span>✓ Room Service</span>
+                    <span>✓ Swimming Pool</span>
+                </div>
+
+                <!-- Room Capacity and Price -->
+                <div class="room-info">
+
+                    <span>
+                        {{ room["minimum_guests"] }}–{{ room["maximum_guests"] }} Guests
+                    </span>
+
+                    <span>
+                        ₹{{ "{:,.0f}".format(room["base_price"]) }} / night
+                    </span>
+
+                </div>
+
+                <a href="#booking" class="room-btn">Book Now</a>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+<!-- ---------------------------------------- -->
+<!-- About Our Hotel Section -->
+<!-- ---------------------------------------- -->
+
+<section class="about-section" id="about">
+
+    <div class="about-container">
+
+        <div class="about-content">
+            <h2>About Breezy Palms</h2>
+
+            <p>
+                Welcome to Breezy Palms in Goa, where comfort meets
+                the beauty of the Sea. We offer thoughtfully
+                designed rooms, welcoming hospitality and
+                facilities to make every stay enjoyable.
+            </p>
+
+            <p>
+                Whether you are travelling with family,
+                friends or as a couple, our hotel provides
+                a relaxing space for a memorable getaway.
+            </p>
+        </div>
+
+    </div>
+
+</section>
+<!-- ---------------------------------------- -->
+<!-- Hotel Facilities Section -->
+<!-- ---------------------------------------- -->
+
+<section class="facilities-section" id="facilities">
+
+    <div class="section-heading">
+        <h2>Our Facilities</h2>
+        <p>Everything you need for a comfortable and relaxing stay.</p>
+    </div>
+
+    <div class="facilities-container">
+
+        <div class="facility-card">
+            <div class="facility-icon">☕</div>
+            <h3>Complimentary Breakfast</h3>
+            <p>Enjoy a delicious breakfast included with every stay.</p>
+        </div>
+
+        <div class="facility-card">
+            <div class="facility-icon">📶</div>
+            <h3>Free Wi-Fi</h3>
+            <p>Stay connected with complimentary internet access.</p>
+        </div>
+
+        <div class="facility-card">
+            <div class="facility-icon">🚗</div>
+            <h3>Free Parking</h3>
+            <p>Convenient parking facilities for our guests.</p>
+        </div>
+
+        <div class="facility-card">
+            <div class="facility-icon">🧺</div>
+            <h3>Laundry Service</h3>
+            <p>Enjoy convenient laundry services during your stay.</p>
+        </div>
+
+        <div class="facility-card">
+            <div class="facility-icon">🛎️</div>
+            <h3>Room Service</h3>
+            <p>Experience convenient service right from your room.</p>
+        </div>
+
+        <div class="facility-card">
+            <div class="facility-icon">🏊</div>
+            <h3>Swimming Pool</h3>
+            <p>Relax and refresh with access to our swimming pool.</p>
+        </div>
+
+    </div>
+
+</section>
+<!-- ---------------------------------------- -->
+<!-- Contact and Footer Section -->
+<!-- ---------------------------------------- -->
+
+<section class="contact-section" id="contact">
+
+    <div class="contact-container">
+
+        <h2>Get in Touch</h2>
+
+        <p>
+            Have questions or need assistance with your stay?
+            We would love to hear from you.
+        </p>
+
+        <div class="contact-details">
+
+            <div>
+                <h3>Our Location</h3>
+                <p>Dona Paula, Goa</p>
+            </div>
+
+            <div>
+                <h3>Email Us</h3>
+                <p>info@BreezyPalms.com</p>
+            </div>
+
+            <div>
+                <h3>Call Us</h3>
+                <p>+91 8314765426</p>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<footer class="footer">
+
+    <h2>Breezy Palms</h2>
+
+    <p>Experience comfort and hospitality by the Sea.</p>
+
+    <p class="copyright">
+        &copy; 2026 Breezy Palms. All Rights Reserved.
+    </p>
+
+</footer>
+
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+<!-- Login Required Popup -->
+<div id="loginPopup" class="login-popup-overlay">
+
+    <div class="login-popup">
+
+        <div class="popup-icon">🔒</div>
+
+        <h2>Login Required</h2>
+
+        <p>
+            Please log in to your guest account before
+            booking your stay with us.
+        </p>
+
+        <a href="{{ url_for('guest_login') }}" class="popup-login-btn">
+            Login to Continue
+        </a>
+
+        <button type="button" class="popup-close-btn" onclick="closeLoginPopup()">
+            Maybe Later
+        </button>
+
+        <div class="popup-register">
+            Don't have an account?
+            <a href="{{ url_for('guest_register') }}">Create Account</a>
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+    function showLoginPopup() {
+        document.getElementById("loginPopup").style.display = "flex";
+    }
+
+    function closeLoginPopup() {
+        document.getElementById("loginPopup").style.display = "none";
+    }
+
+    // Close popup when clicking outside the box
+    document.getElementById("loginPopup").addEventListener("click", function(event) {
+        if (event.target === this) {
+            closeLoginPopup();
+        }
+    });
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff Portal | Breezy Palms</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body class="staff-login-page">
+
+    <nav class="luxury-login-nav">
+        <a href="{{ url_for('home') }}" class="luxury-brand">
+            <span class="brand-symbol">✧</span>
+            <span class="breezy">Breezy</span>
+            <span class="palms">Palms</span>
+        </a>
+
+        <a href="{{ url_for('home') }}" class="back-home">
+            <span>⌂</span> Back to Website
+        </a>
+    </nav>
+
+    <main class="luxury-login-layout">
+
+        <section class="login-welcome">
+
+            <div class="welcome-label">
+                <span>✦</span> EXCLUSIVE STAFF ACCESS
+            </div>
+
+            <h1>
+                Hospitality<br>
+                Begins With <em>You.</em>
+            </h1>
+
+            <p>
+                Welcome to your dedicated hotel management portal.
+                Manage reservations, rooms and guest experiences
+                all in one place.
+            </p>
+
+            <div class="welcome-divider"></div>
+
+            <div class="welcome-features">
+                <div>
+                    <span class="feature-icon">▦</span>
+                    <strong>Manage</strong>
+                    <small>Reservations</small>
+                </div>
+
+                <div>
+                    <span class="feature-icon">♙</span>
+                    <strong>Update</strong>
+                    <small>Room Status</small>
+                </div>
+
+                <div>
+                    <span class="feature-icon">♧</span>
+                    <strong>Enhance</strong>
+                    <small>Guest Experience</small>
+                </div>
+            </div>
+
+        </section>
+
+        <section class="staff-login-card">
+
+            <div class="card-emblem">✿</div>
+
+            <h2>Staff Portal</h2>
+
+            <div class="card-divider">
+                <span></span> ✦ <span></span>
+            </div>
+
+            <p class="login-subtitle">
+                Sign in to continue to your workspace.
+            </p>
+
+            <form method="POST" action="{{ url_for('staff_login') }}">
+
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <div class="login-input-wrap">
+                        <span>✉</span>
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            placeholder="Enter your staff email"
+                            required
+                        >
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <div class="login-input-wrap">
+                        <span>♙</span>
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="Enter your password"
+                            required
+                        >
+                    </div>
+                </div>
+
+                <button type="submit" class="login-btn">
+                    Sign In <span>→</span>
+                </button>
+
+            </form>
+
+            {% if error %}
+                <p class="login-error">{{ error }}</p>
+            {% endif %}
+
+            <div class="login-security">
+                <span>♢</span>
+                Secure access for authorised hotel staff
+            </div>
+
+        </section>
+
+    </main>
+
+</body>
+</html>
+

@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guest Management | Breezy Palms</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+    <main class="admin-dashboard">
+
+        <div class="dashboard-heading">
+            <div>
+                <h1>Guest Management</h1>
+                <p>View registered guests and their booking information.</p>
+            </div>
+        </div>
+
+        {% if selected_guest %}
+
+        <section class="dashboard-panel">
+
+        <h2>Guest Details</h2>
+
+        <p><strong>Guest Name:</strong> {{ selected_guest.full_name }}</p>
+        <p><strong>Email:</strong> {{ selected_guest.email }}</p>
+        <p><strong>Phone:</strong> {{ selected_guest.phone }}</p>
+
+    </section>
+
+    <section class="dashboard-panel">
+
+        <h2>Booking History</h2>
+
+        <div class="dashboard-table-wrapper">
+            <table class="dashboard-table">
+
+                <thead>
+                    <tr>
+                        <th>Booking Reference</th>
+                        <th>Room Number</th>
+                        <th>Room Category</th>
+                        <th>Check-in</th>
+                        <th>Check-out</th>
+                        <th>Guests</th>
+                        <th>Occupant Names</th>
+                        <th>Total Amount</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for booking in bookings %}
+                    <tr>
+                        <td>{{ booking.booking_reference }}</td>
+                        <td>{{ booking.room_number }}</td>
+                        <td>{{ booking.category_name }}</td>
+                        <td>{{ booking.checkin_date }}</td>
+                        <td>{{ booking.checkout_date }}</td>
+                        <td>{{ booking.number_of_guests }}</td>
+                        <td>
+                            {% if booking.occupant_names %}
+                                {% for occupant in booking.occupant_names.split('|') %}
+                                    <div>{{ occupant }}</div>
+                                {% endfor %}
+                            {% else %}
+                                Not available
+                            {% endif %}
+                        </td>
+                        <td>₹{{ "%.2f"|format(booking.total_amount) }}</td>
+                        <td>{{ booking.booking_status }}</td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="9">This guest has no booking history.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+
+            </table>
+        </div>
+
+        <p>
+            <a href="{{ url_for('guest_management') }}" class="admin-home-link">
+                Back to Guest Directory
+            </a>
+        </p>
+
+    </section>
+
+{% else %}
+
+        <section class="dashboard-panel">
+
+            <div class="guest-directory-header">
+                <h2>Registered Guests</h2>
+            
+                <div class="guest-search">
+                    <input
+                        type="text"
+                        id="guestSearch"
+                        placeholder="Search by guest name, email or phone..."
+                        onkeyup="searchGuests()"
+                    >
+                </div>
+            </div>
+
+            <div class="dashboard-table-wrapper">
+                <table class="dashboard-table guest-directory-table">
+
+                    <thead>
+                        <tr>
+                            <th>Guest ID</th>
+                            <th>Guest Name</th>
+                            <th>Email Address</th>
+                            <th>Phone Number</th>
+                            <th>Total Bookings</th>
+                            <th>Booking Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for guest in guests %}
+                        <tr>
+                            <td>{{ guest.guest_id }}</td>
+                            <td>{{ guest.full_name }}</td>
+                            <td>{{ guest.email }}</td>
+                            <td>{{ guest.phone }}</td>
+                            <td>{{ guest.total_bookings }}</td>
+                            <td>
+                                {% if guest.total_bookings > 0 %}
+                                    Has Bookings
+                                {% else %}
+                                    No Bookings
+                                {% endif %}
+                            </td>
+
+                            <td>
+                                <a href="{{ url_for('guest_bookings', guest_id=guest.guest_id) }}"
+                                   class="view-bookings-link">
+                                    View Bookings
+                                </a>
+                            </td>
+
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="7">No registered guests found.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+
+                </table>
+            </div>
+
+        </section>
+
+        {% endif %}
+
+    </main>
+
+</body>
+
+<script>
+    function searchGuests() {
+        const input = document.getElementById("guestSearch");
+        const filter = input.value.toLowerCase();
+        const rows = document.querySelectorAll(
+            ".guest-directory-table tbody tr"
+        );
+
+        rows.forEach(row => {
+            const text = row.textContent.toLowerCase();
+            row.style.display = text.includes(filter) ? "" : "none";
+        });
+    }
+</script>
+
+</html>

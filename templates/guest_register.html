@@ -1,0 +1,422 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account | Breezy Palms</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'DM Sans', sans-serif;
+            background: #e8edf1;
+            color: #102c49;
+        }
+
+        .register-scene {
+            min-height: 100vh;
+            padding: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background:
+                linear-gradient(135deg, #e8edf1, #d3e0e9);
+        }
+
+        .register-shell {
+            width: 100%;
+            max-width: 1250px;
+            min-height: 850px;
+            zoom: 0.9;
+            display: grid;
+            grid-template-columns: 0.92fr 1.08fr;
+            overflow: hidden;
+            border: 2px solid #c5a36b;
+            border-radius: 25px;
+            background: #fffdfa;
+            box-shadow: 0 25px 75px rgba(19, 47, 72, 0.18);
+        }
+
+        /* LEFT IMAGE PANEL */
+
+        .register-story {
+            position: relative;
+            padding: 65px 55px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            color: white;
+
+            background:
+                linear-gradient(
+                    to bottom,
+                    rgba(5, 25, 48, 0.25),
+                    rgba(5, 25, 48, 0.25) 45%,
+                    rgba(5, 25, 48, 0.92)
+                ),
+                url("{{ url_for('static', filename='images/resort.jfif') }}");
+
+            background-size: cover;
+            background-position: center;
+        }
+
+        .hotel-brand {
+            font-family: 'Playfair Display', serif;
+            font-size: 48px;
+            letter-spacing: 2px;
+        }
+
+        .hotel-brand .breezy {
+    color: #FFC928 !important;
+    font-family: 'Poppins', sans-serif !important;
+    font-size: inherit;
+    font-weight: 700;
+}
+
+.hotel-brand .palms {
+    color: #39FF14 !important;
+    font-family: 'Dancing Script', cursive !important;
+    font-size: inherit;
+    font-weight: 400;
+}
+
+        .brand-subtitle {
+            font-size: 17px;
+            letter-spacing: 7px;
+            margin-top: 5px;
+            font-weight: 800;
+        }
+
+        .gold-line {
+            width: 65px;
+            height: 2px;
+            background: #d8b879;
+            margin-top: 20px;
+        }
+
+        .story-message {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .story-message h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 36px;
+            font-weight: 400;
+            line-height: 1.2;
+            color: #fff;
+        }
+
+        .story-message p {
+            font-size: 18px;
+            line-height: 1.8;
+            color: rgba(255,255,255,0.9);
+        }
+
+        .story-footer {
+            text-align: center;
+            font-size: 12px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: #e6d0a5;
+        }
+
+        /* RIGHT FORM PANEL */
+
+        .register-form-area {
+            padding: 55px 75px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background: #fffdfa;
+        }
+
+        .form-kicker {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 18px;
+            color: #a98750;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 4px;
+            text-align: center;
+        }
+
+        .form-kicker::before,
+        .form-kicker::after {
+            content: "";
+            height: 1px;
+            flex: 1;
+            background: #c9a66d;
+        }
+
+        .register-form-area h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 48px;
+            font-weight: 500;
+            text-align: center;
+            color: #102c49;
+            margin: 25px 0 10px;
+        }
+
+        .form-intro {
+            text-align: center;
+            color: #74808d;
+            font-size: 15px;
+            margin-bottom: 30px;
+        }
+
+        .register-form .form-group {
+            margin-bottom: 17px;
+        }
+
+        .register-form label {
+            display: block;
+            margin-bottom: 7px;
+            color: #344b60;
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .register-form input {
+            width: 100%;
+            height: 54px;
+            padding: 0 17px;
+            border: 1px solid #d8d2ca;
+            border-radius: 9px;
+            background: #fff;
+            color: #17334f;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 14px;
+            outline: none;
+            transition: 0.2s;
+        }
+
+        .register-form input:focus {
+            border-color: #b18a4d;
+            box-shadow: 0 0 0 3px rgba(177,138,77,0.12);
+        }
+
+        .register-button {
+            width: 100%;
+            height: 62px;
+            margin-top: 12px;
+            border: none;
+            border-radius: 40px;
+            background: linear-gradient(110deg, #092b49, #1d4567);
+            color: #f0d5a4;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 3px;
+            cursor: pointer;
+            transition: 0.25s;
+        }
+
+        .register-button:hover {
+            background: #071f37;
+            transform: translateY(-2px);
+        }
+
+        .existing-account {
+            margin-top: 25px;
+            text-align: center;
+            font-size: 14px;
+            color: #6e7b87;
+        }
+
+        .existing-account a {
+            color: #17466d;
+            font-weight: 700;
+            text-decoration: underline;
+            margin-left: 5px;
+        }
+
+        .back-home {
+            display: block;
+            margin-top: 20px;
+            text-align: center;
+            color: #8b795c;
+            font-size: 13px;
+            text-decoration: none;
+        }
+
+        .back-home:hover,
+        .existing-account a:hover {
+            color: #b18a4d;
+        }
+
+        /* RESPONSIVE DESIGN */
+
+        @media (max-width: 950px) {
+            .register-shell {
+                grid-template-columns: 1fr;
+                max-width: 600px;
+            }
+
+            .register-story {
+                min-height: 330px;
+                padding: 35px;
+            }
+
+            .story-message h1 {
+                font-size: 38px;
+            }
+
+            .register-form-area {
+                padding: 45px 40px;
+            }
+        }
+
+        @media (max-width: 500px) {
+            .register-scene {
+                padding: 12px;
+            }
+
+            .register-form-area {
+                padding: 35px 22px;
+            }
+
+            .register-form-area h2 {
+                font-size: 36px;
+            }
+
+            .form-kicker {
+                font-size: 10px;
+                letter-spacing: 2px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <main class="register-scene">
+
+        <div class="register-shell">
+
+            <!-- LEFT IMAGE PANEL -->
+
+            <section class="register-story">
+
+                <div>
+                    <div class="hotel-brand">
+                        <span class="breezy">Breezy</span>
+                        <span class="palms">Palms</span>
+                    </div>
+                    <div class="brand-subtitle">GOA · INDIA</div>
+                    <div class="gold-line"></div>
+                </div>
+
+                <div class="story-message">
+                    <h1>Your Perfect Getaway Awaits</h1>
+
+                    <p>
+                        Discover comfort, elegance and unforgettable
+                        experiences with every stay.
+                    </p>
+                </div>
+
+                <div class="story-footer">
+                    A stay to remember
+                </div>
+
+            </section>
+
+            <!-- RIGHT REGISTRATION PANEL -->
+
+            <section class="register-form-area">
+
+                <div class="form-kicker">WELCOME TO BREEZY PALMS</div>
+
+                <h2>Create Your Account</h2>
+
+                <p class="form-intro">
+                    Join us for an exceptional stay experience.
+                </p>
+
+                <form class="register-form"
+                      method="POST"
+                      action="{{ url_for('guest_register') }}">
+
+                    <div class="form-group">
+                        <label for="full_name">Full Name</label>
+                        <input type="text"
+                               id="full_name"
+                               name="full_name"
+                               placeholder="Enter your full name"
+                               required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email"
+                               id="email"
+                               name="email"
+                               placeholder="Enter your email address"
+                               required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel"
+                               id="phone"
+                               name="phone"
+                               placeholder="Enter your 10-digit number"
+                               pattern="[0-9]{10}"
+                               maxlength="10"
+                               required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Create Password</label>
+                        <input type="password"
+                               id="password"
+                               name="password"
+                               placeholder="Create a password"
+                               minlength="8"
+                               required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirm_password">Confirm Password</label>
+                        <input type="password"
+                               id="confirm_password"
+                               name="confirm_password"
+                               placeholder="Re-enter your password"
+                               minlength="8"
+                               required>
+                    </div>
+
+                    <button type="submit" class="register-button">
+                        CREATE ACCOUNT&nbsp; →
+                    </button>
+
+                </form>
+
+                <p class="existing-account">
+                    Already have an account?
+                    <a href="{{ url_for('guest_login') }}">Sign In</a>
+                </p>
+
+                <a href="{{ url_for('home') }}" class="back-home">
+                    ← Return to homepage
+                </a>
+
+            </section>
+
+        </div>
+
+    </main>
+
+</body>
+</html>

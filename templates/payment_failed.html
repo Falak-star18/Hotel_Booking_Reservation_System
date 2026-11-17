@@ -1,0 +1,147 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+    <title>Payment Failed | Breezy Palms</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f3f6fa;
+            color: #24364b;
+        }
+
+        .navbar {
+            background: #102944;
+            color: white;
+            padding: 20px 8%;
+            font-size: 30px;
+            font-weight: bold;
+        }
+
+        .navbar .breezy {
+    color: #FFC928;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+}
+
+.navbar .palms {
+    color: #39FF14;
+    font-family: 'Dancing Script', cursive;
+    font-weight: 800;
+}
+
+        .container {
+            max-width: 620px;
+            margin: 75px auto;
+            padding: 45px 35px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            text-align: center;
+        }
+
+        .failure-icon {
+            width: 75px;
+            height: 75px;
+            margin: 0 auto 22px;
+            border-radius: 50%;
+            background: #fde8e8;
+            color: #dc3545;
+            font-size: 45px;
+            line-height: 75px;
+            font-weight: bold;
+        }
+
+        h1 {
+            color: #dc3545;
+            margin-bottom: 12px;
+        }
+
+        p {
+            line-height: 1.7;
+            color: #607086;
+        }
+
+        .booking-reference {
+            margin: 25px 0;
+            padding: 16px;
+            background: #f3f6fa;
+            border-radius: 9px;
+        }
+
+        .actions {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 13px 25px;
+            border-radius: 7px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .primary-btn {
+            background: #102944;
+            color: white;
+        }
+
+        .secondary-btn {
+            border: 1px solid #102944;
+            color: #102944;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="navbar">
+        <span class="breezy">Breezy</span>
+        <span class="palms">Palms</span>
+    </div>
+
+    <div class="container">
+
+        <div class="failure-icon">×</div>
+
+        <h1>Payment Failed!</h1>
+
+        <p>
+            Your simulated payment was unsuccessful.
+            No confirmed reservation has been created.
+            Your temporary room hold has been released.
+        </p>
+
+        <div class="booking-reference">
+            <strong>Booking Reference:</strong>
+            {{ booking_reference }}
+        </div>
+
+        <p>
+            You can return to the hotel homepage and
+            make a new booking.
+        </p>
+
+        <div class="actions">
+            <a href="/" class="btn primary-btn">
+                Return to Home
+            </a>
+        </div>
+
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Housekeeping Dashboard | Breezy Palms</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+          <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body class="housekeeping-dashboard-page">
+
+    <div class="housekeeping-layout">
+
+        <!-- Sidebar -->
+        <aside class="housekeeping-sidebar">
+
+            <div class="housekeeping-brand">
+                <h2>
+                    <span class="breezy">Breezy</span>
+                    <span class="palms">Palms</span>
+                </h2>
+                <p>STAY • RELAX • ENJOY</p>
+            </div>
+
+            <nav class="housekeeping-navigation">
+
+                <a href="{{ url_for('housekeeping_dashboard') }}"
+                   class="housekeeping-nav-link active">
+                    Dashboard
+                </a>
+
+                <a href="#room-list"
+                   class="housekeeping-nav-link">
+                    Room Cleaning
+                </a>
+
+            </nav>
+
+            <div class="housekeeping-sidebar-bottom">
+                <a href="{{ url_for('staff_logout') }}"
+                   class="housekeeping-nav-link housekeeping-logout">
+                    Logout
+                </a>
+            </div>
+
+        </aside>
+
+
+        <!-- Main Content -->
+        <main class="housekeeping-main">
+
+            <!-- Header -->
+            <header class="housekeeping-header">
+
+                <div>
+                    <p class="housekeeping-eyebrow">STAFF WORKSPACE</p>
+                    <h1>Housekeeping Dashboard</h1>
+                    <p>Monitor room cleanliness and manage cleaning activities.</p>
+                </div>
+
+                <div class="housekeeping-profile">
+                    <strong>{{ session.get('full_name') }}</strong>
+                    <span>{{ session.get('role') }}</span>
+                </div>
+
+            </header>
+
+
+            <!-- Summary Cards -->
+            <section class="housekeeping-stats">
+
+                <div class="housekeeping-stat-card">
+                    <span>Total Rooms</span>
+                    <h2>{{ total_rooms }}</h2>
+                    <p>Active hotel rooms</p>
+                </div>
+
+                <div class="housekeeping-stat-card">
+                    <span>Dirty / Vacant</span>
+                    <h2>{{ dirty_rooms }}</h2>
+                    <p>Rooms requiring cleaning</p>
+                </div>
+
+                <div class="housekeeping-stat-card">
+                    <span>Cleaning In Progress</span>
+                    <h2>{{ cleaning_rooms }}</h2>
+                    <p>Rooms currently being cleaned</p>
+                </div>
+
+                <div class="housekeeping-stat-card">
+                    <span>Clean / Ready</span>
+                    <h2>{{ clean_rooms }}</h2>
+                    <p>Rooms ready for guests</p>
+                </div>
+
+            </section>
+
+            <!-- REPORT MAINTENANCE ISSUE -->
+            {% if session.get('role') == 'Housekeeping Staff' %}
+
+<section class="housekeeping-report-panel">
+
+    <div class="housekeeping-section-heading">
+        <div>
+            <h2>Report Maintenance Issue</h2>
+            <p>Report any faulty equipment or maintenance problem found in a room.</p>
+        </div>
+    </div>
+
+    <form action="{{ url_for('report_maintenance') }}" method="POST"
+          class="housekeeping-report-form">
+
+        <div class="report-form-group">
+            <label for="room_id">Select Room</label>
+
+            <select name="room_id" id="room_id" required>
+                <option value="">Choose a room</option>
+
+                {% for room in rooms %}
+                    {% if room.maintenance_status == 'Operational' %}
+                        <option value="{{ room.room_id }}">
+                            Room {{ room.room_number }}
+                        </option>
+                    {% endif %}
+                {% endfor %}
+
+            </select>
+        </div>
+
+        <div class="report-form-group">
+            <label for="issue_description">Describe the Problem</label>
+
+            <textarea
+                name="issue_description"
+                id="issue_description"
+                rows="4"
+                placeholder="Example: Air conditioner is not working properly."
+                required
+            ></textarea>
+        </div>
+
+        <button type="submit" class="report-maintenance-button">
+            Submit Maintenance Report
+        </button>
+
+    </form>
+
+</section>
+{% endif %}
+
+
+            <!-- Room List -->
+            <section class="housekeeping-room-panel"
+                     id="room-list">
+
+                <div class="housekeeping-section-heading">
+                    <div>
+                        <h2>Room Cleaning Overview</h2>
+                        <p>Current housekeeping status of all active rooms</p>
+                    </div>
+                </div>
+
+                <div class="housekeeping-table-wrapper">
+
+                    <table class="housekeeping-table">
+
+                        <thead>
+                            <tr>
+                                <th>Room Number</th>
+                                <th>Housekeeping Status</th>
+                                <th>Maintenance Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            {% for room in rooms %}
+                        
+                            <tr>
+                                <td>{{ room.room_number }}</td>
+                        
+                                <td>
+                                    <span class="housekeeping-status">
+                                        {{ room.housekeeping_status }}
+                                    </span>
+                                </td>
+                        
+                                <td>{{ room.maintenance_status }}</td>
+                        
+                                <td>
+                        
+                                    {% if session.get('role') == 'Housekeeping Staff' %}
+                        
+                                        {% if room.housekeeping_status == 'Dirty/Vacant'
+                                              and room.maintenance_status == 'Operational' %}
+                        
+                                            <form action="{{ url_for('start_cleaning', room_id=room.room_id) }}"
+                                                  method="POST">
+                                                <button type="submit" class="start-cleaning-button">
+                                                    Start Cleaning
+                                                </button>
+                                            </form>
+                        
+                                        {% elif room.housekeeping_status == 'Cleaning In Progress' %}
+                        
+                                            <form action="{{ url_for('complete_cleaning', room_id=room.room_id) }}"
+                                                  method="POST">
+                                                <button type="submit" class="complete-cleaning-button">
+                                                    Mark as Clean
+                                                </button>
+                                            </form>
+                        
+                                        {% else %}
+                        
+                                            <span>—</span>
+                        
+                                        {% endif %}
+                        
+                                    {% else %}
+                        
+                                        <span>View Only</span>
+                        
+                                    {% endif %}
+                        
+                                </td>
+                            </tr>
+                        
+                            {% else %}
+                        
+                            <tr>
+                                <td colspan="4">
+                                    No active rooms found.
+                                </td>
+                            </tr>
+                        
+                            {% endfor %}
+                        
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </section>
+
+
+            <footer class="housekeeping-footer">
+                © Breezy Palms | Housekeeping Workspace
+            </footer>
+
+        </main>
+
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Complete Your Reservation</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <div class="logo">
+            <span class="breezy">Breezy</span>
+            <span class="palms">Palms</span>
+        </div>
+        <a href="/">Home</a>
+    </nav>
+
+    <section class="reservation-section">
+
+        <h1>Complete Your Reservation</h1>
+
+        <p>Please enter the details of the primary guest.</p>
+
+        <form class="reservation-form"
+              action="/confirm-reservation"
+              method="POST">
+
+              <input type="hidden" name="checkin_date"
+       value="{{ checkin_date }}">
+
+<input type="hidden" name="checkout_date"
+       value="{{ checkout_date }}">
+
+<input type="hidden" name="guests"
+       value="{{ guests }}">
+
+<input type="hidden" name="category_id"
+       value="{{ category_id }}">
+
+<input type="hidden" name="total_amount"
+       value="{{ total_amount }}">
+
+            <h2>Primary Guest Details</h2>
+
+            </div>
+
+            <div class="form-group">
+                <label for="full_name">Full Name</label>
+                <input type="text"
+                       id="full_name"
+                       name="full_name"
+                       value="{{ guest_name }}"
+                       readonly
+                       required>
+            </div>
+            
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email"
+                       id="email"
+                       name="email"
+                       value="{{ guest_email }}"
+                       readonly
+                       required>
+            </div>
+
+            <div class="form-group">
+                <label for="address">Address</label>
+                <textarea id="address"
+                          name="address"
+                          rows="3"
+                          required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="phone">Phone Number</label>
+                <input type="tel"
+                       id="phone"
+                       name="phone"
+                       pattern="[0-9]{10}"
+                       maxlength="10"
+                       minlength="10"
+                       title="Please enter a valid 10-digit phone number."
+                       required>
+            </div>
+
+            <div class="form-group">
+                <label for="id_type">ID Type</label>
+                <select id="id_type" name="id_type" required>
+                    <option value="">Select ID Type</option>
+                    <option value="Aadhaar Card">Aadhaar Card</option>
+                    <option value="Passport">Passport</option>
+                    <option value="Driving Licence">Driving Licence</option>
+                    <option value="Voter ID">Voter ID</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="id_number">ID Number</label>
+                <input type="text"
+                       id="id_number"
+                       name="id_number"
+                       required>
+            </div>
+
+                        <!-- Occupant Details -->
+
+                        <h2>Occupant Details</h2>
+
+                        <p>Please enter the details of all guests, including the primary guest.</p>
+            
+                        {% for i in range(guests|int) %}
+            
+                            <div class="form-group">
+            
+                                <h3>Guest {{ i + 1 }}</h3>
+            
+                                <label for="occupant_name_{{ i }}">Full Name</label>
+            
+                                <input type="text"
+                                       id="occupant_name_{{ i }}"
+                                       name="occupant_name[]"
+                                       required>
+            
+                                <label for="occupant_age_{{ i }}">Age</label>
+            
+                                <input
+                                    type="number"
+                                    name="occupant_age[]"
+                                    min="1"
+                                    max="99"
+                                    title="Age must be between 1 and 99."
+                                    required
+                                >
+            
+                            </div>
+            
+                        {% endfor %}
+
+                        <input type="hidden" name="occupant_count"
+                               value="{{ guests }}">
+
+                        <div class="form-group">
+
+                            <button type="submit" class="submit-btn">
+                                Confirm Reservation
+                            </button>
+            
+                        </div>
+
+        </form>
+
+    </section>
+
+</body>
+</html>

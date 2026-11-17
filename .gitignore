@@ -1,0 +1,24 @@
+# Virtual Environment
+.venv/
+venv/
+
+# Python Cache
+__pycache__/
+*.py[cod]
+
+# Pytest
+.pytest_cache/
+
+# Coverage
+.coverage
+htmlcov/
+
+# Environment Variables
+.env
+
+# VS Code
+.vscode/
+
+# Test and Backup Databases
+database/hotel_test.db
+database/hotel_backup_before_no_refund.db.db

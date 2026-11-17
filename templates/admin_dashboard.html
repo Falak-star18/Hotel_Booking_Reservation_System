@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Admin Dashboard | Breezy Palms</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">      
+</head>
+
+<body>
+
+    <nav class="admin-navbar">
+
+        <!-- Hotel Branding -->
+        <div class="admin-brand">
+            <span class="admin-brand-name">
+                <span class="breezy">Breezy</span>
+                <span class="palms">Palms</span>
+            </span>
+            <span class="admin-brand-tagline">STAY • RELAX • ENJOY</span>
+        </div>
+    
+        <!-- Dashboard Title -->
+        <div class="admin-nav-title">
+            
+        </div>
+    
+        <!-- Navigation Links -->
+        <div class="admin-nav-actions">
+        
+            <a href="{{ url_for('receptionist_dashboard') }}" class="admin-home-link">
+                Reception
+            </a>
+        
+            <a href="{{ url_for('housekeeping_dashboard') }}" class="admin-home-link">
+                Housekeeping 
+            </a>
+
+            <a href="{{ url_for('guest_management') }}" class="admin-home-link">
+                Guest Management
+            </a>
+        
+            <a href="{{ url_for('staff_logout') }}"
+               class="admin-logout-button">
+                Logout
+            </a>
+        
+        </div>
+    
+    </nav>
+
+    <main class="admin-dashboard">
+
+        <div class="dashboard-heading">
+            <div>
+                <h1>Administrator Dashboard</h1>
+                <p>Overview of hotel reservations, guests and rooms.</p>
+            </div>
+        </div>
+
+        <!-- Summary Cards -->
+        <section class="dashboard-stats">
+
+            <div class="stat-card">
+                <h3>Total Reservations</h3>
+                <p>{{ total_reservations }}</p>
+            </div>
+
+            <div class="stat-card">
+                <h3>Total Guests</h3>
+                <p>{{ total_guests }}</p>
+            </div>
+
+            <div class="stat-card">
+                <h3>Total Rooms</h3>
+                <p>{{ total_rooms }}</p>
+            </div>
+
+            <div class="stat-card">
+                <h3>Currently Occupied</h3>
+                <p>{{ occupied_rooms }}</p>
+            </div>
+
+        </section>
+
+        <!-- Room Category Overview -->
+        <section class="dashboard-panel">
+
+            <h2>Room Category Overview</h2>
+
+            <div class="dashboard-table-wrapper">
+                <table class="dashboard-table">
+
+                    <thead>
+                        <tr>
+                            <th>Room Category</th>
+                            <th>Total Rooms</th>
+                            <th>Booked Rooms</th>
+                            <th>Available Rooms</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for category in category_stats %}
+                        <tr>
+                            <td>{{ category.category_name }}</td>
+                            <td>{{ category.total_rooms }}</td>
+                            <td>{{ category.booked_rooms }}</td>
+                            <td>{{ category.available_rooms }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+
+                </table>
+            </div>
+
+        </section>
+
+                <!-- Guest Overview -->
+                <section class="dashboard-panel">
+
+                    <h2>Guest Overview</h2>
+        
+                    <div class="dashboard-stats">
+        
+                        <div class="stat-card">
+                            <h3>Registered Guests</h3>
+                            <p>{{ registered_guests }}</p>
+                        </div>
+        
+                        <div class="stat-card">
+                            <h3>Guests with Bookings</h3>
+                            <p>{{ guests_with_bookings }}</p>
+                        </div>
+        
+                        <div class="stat-card">
+                            <h3>Guests without Bookings</h3>
+                            <p>{{ guests_without_bookings }}</p>
+                        </div>
+        
+                    </div>
+        
+                </section>
+
+        <!-- Recent Reservations -->
+        <section class="dashboard-panel">
+
+            <h2>Recent Reservations</h2>
+
+            <div class="dashboard-table-wrapper">
+                <table class="dashboard-table">
+
+                    <thead>
+                        <tr>
+                            <th>Booking Reference</th>
+                            <th>Guest Name</th>
+                            <th>Room</th>
+                            <th>Check-in</th>
+                            <th>Check-out</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for reservation in recent_reservations %}
+                        <tr>
+                            <td>{{ reservation.booking_reference }}</td>
+                            <td>{{ reservation.guest_name }}</td>
+                            <td>{{ reservation.room_number }}</td>
+                            <td>{{ reservation.checkin_date }}</td>
+                            <td>{{ reservation.checkout_date }}</td>
+                            <td>{{ reservation.booking_status }}</td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="6">No reservations found.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+
+                </table>
+            </div>
+
+        </section>
+
+    </main>
+
+</body>
+</html>

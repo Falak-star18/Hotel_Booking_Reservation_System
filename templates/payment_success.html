@@ -1,0 +1,254 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+    <title>Reservation Confirmed | Breezy Palms</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6f9;
+            color: #172b45;
+        }
+
+        .navbar {
+            background: #102944;
+            color: white;
+            padding: 20px 7%;
+            font-size: 30px;
+            font-weight: bold;
+        }
+
+        .navbar .breezy {
+    color: #FFC928;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+}
+
+.navbar .palms {
+    color: #39FF14;
+    font-family: 'Dancing Script', cursive;
+    font-weight: 800;
+}
+
+        .container {
+            max-width: 700px;
+            margin: 55px auto;
+            padding: 0 20px;
+        }
+
+        .success-card {
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: 0 5px 25px rgba(16, 41, 68, 0.08);
+        }
+
+        .success-icon {
+            width: 75px;
+            height: 75px;
+            border-radius: 50%;
+            background: #e5f6ec;
+            color: #23834d;
+            font-size: 42px;
+            line-height: 75px;
+            margin: 0 auto 20px;
+        }
+
+        h1 {
+            color: #173c2b;
+            margin-bottom: 10px;
+        }
+
+        .message {
+            color: #68788b;
+            line-height: 1.6;
+        }
+
+        .reference {
+            background: #f0f4f8;
+            padding: 18px;
+            border-radius: 10px;
+            margin: 25px 0;
+        }
+
+        .reference small {
+            display: block;
+            color: #718096;
+            margin-bottom: 7px;
+        }
+
+        .reference strong {
+            font-size: 20px;
+            letter-spacing: 1px;
+        }
+
+        .details {
+            text-align: left;
+            border-top: 1px solid #e5eaf0;
+            padding-top: 20px;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            padding: 12px 0;
+            border-bottom: 1px solid #edf0f4;
+            font-size: 14px;
+        }
+
+        .detail-row span:first-child {
+            color: #718096;
+        }
+
+        .detail-row span:last-child {
+            font-weight: 600;
+            text-align: right;
+        }
+
+        .payment-status {
+            color: #23834d !important;
+        }
+
+        .actions {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+
+        .action-btn {
+            display: inline-block;
+            padding: 14px 24px;
+            border-radius: 30px;
+            background: #102944;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .secondary-btn {
+            background: #e9eef4;
+            color: #102944;
+        }
+
+        @media (max-width: 600px) {
+            .success-card {
+                padding: 25px 18px;
+            }
+
+            .detail-row {
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="navbar">
+        <span class="breezy">Breezy</span>
+        <span class="palms">Palms</span>
+    </div>
+
+    <div class="container">
+
+        <div class="success-card">
+
+            <div class="success-icon">✓</div>
+
+            <h1>Reservation Confirmed!</h1>
+
+            <p class="message">
+                Your simulated payment was successful.
+                Your reservation at Breezy Palms has been confirmed.
+            </p>
+
+            <div class="reference">
+                <small>Booking Reference</small>
+                <strong>{{ reservation.booking_reference }}</strong>
+            </div>
+
+            <div class="details">
+
+                <div class="detail-row">
+                    <span>Guest Name</span>
+                    <span>{{ reservation.full_name }}</span>
+                </div>
+
+                <div class="detail-row">
+                    <span>Room Number</span>
+                    <span>{{ reservation.room_number }}</span>
+                </div>
+
+                <div class="detail-row">
+                    <span>Room Category</span>
+                    <span>{{ reservation.category_name }}</span>
+                </div>
+
+                <div class="detail-row">
+                    <span>Check-in</span>
+                    <span>{{ reservation.checkin_date }}</span>
+                </div>
+
+                <div class="detail-row">
+                    <span>Check-out</span>
+                    <span>{{ reservation.checkout_date }}</span>
+                </div>
+
+                <div class="detail-row">
+                    <span>Number of Guests</span>
+                    <span>{{ reservation.number_of_guests }}</span>
+                </div>
+
+                <div class="detail-row">
+                    <span>Total Amount Paid</span>
+                    <span>₹{{ "%.2f"|format(reservation.total_amount) }}</span>
+                </div>
+
+                <div class="detail-row">
+                    <span>Payment Status</span>
+                    <span class="payment-status">
+                        {{ reservation.payment_status }}
+                    </span>
+                </div>
+
+                <div class="detail-row">
+                    <span>Reservation Status</span>
+                    <span>{{ reservation.booking_status }}</span>
+                </div>
+
+            </div>
+
+            <div class="actions">
+
+                <a href="{{ url_for('my_bookings') }}"
+                   class="action-btn">
+                    View My Bookings
+                </a>
+
+                <a href="/"
+                   class="action-btn secondary-btn">
+                    Return to Home
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+</html>

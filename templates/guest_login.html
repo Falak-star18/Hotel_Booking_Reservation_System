@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome | Breezy Palms</title>
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600&display=swap"
+          rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'DM Sans', sans-serif;
+            color: #172b49;
+            background: #dce9f2;
+        }
+
+        .login-scene {
+            min-height: 100vh;
+            padding: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            background:
+                radial-gradient(ellipse at 15% 20%, rgba(255,255,255,.75), transparent 35%),
+                radial-gradient(ellipse at 85% 85%, rgba(92,145,178,.5), transparent 40%),
+                linear-gradient(135deg, #d8e8f0, #a9c9dc 48%, #e7edf0);
+        }
+
+        .login-scene::before,
+        .login-scene::after {
+            content: "";
+            position: absolute;
+            border-radius: 50%;
+            border: 1px solid rgba(255,255,255,.55);
+            pointer-events: none;
+        }
+
+        .login-scene::before {
+            width: 650px;
+            height: 650px;
+            top: -370px;
+            left: -170px;
+        }
+
+        .login-scene::after {
+            width: 750px;
+            height: 750px;
+            bottom: -490px;
+            right: -200px;
+        }
+
+        .login-shell {
+            width: 100%;
+            max-width: 1120px;
+            min-height: 680px;
+            display: grid;
+            grid-template-columns: 1.05fr .95fr;
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+            border-radius: 22px;
+            background: #fff;
+            box-shadow: 0 30px 90px rgba(31, 65, 91, .19);
+        }
+
+        .login-story {
+            padding: 65px 58px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            color: white;
+            background:
+                linear-gradient(180deg, rgba(12, 43, 75, .28), rgba(12, 43, 75, .78)),
+                linear-gradient(135deg, #5285a5, #1c4d76 65%, #153957);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-story::before {
+            content: "";
+            position: absolute;
+            width: 420px;
+            height: 420px;
+            border: 1px solid rgba(255,255,255,.18);
+            border-radius: 50%;
+            right: -210px;
+            top: 100px;
+        }
+
+        .login-story::after {
+            content: "";
+            position: absolute;
+            width: 310px;
+            height: 310px;
+            border: 1px solid rgba(255,255,255,.15);
+            border-radius: 50%;
+            right: -155px;
+            top: 155px;
+        }
+
+        .story-top,
+        .story-bottom {
+            position: relative;
+            z-index: 1;
+        }
+
+        .story-logo {
+            font-size: 17px;
+            letter-spacing: 5px;
+            font-weight: 700;
+        }
+
+        .story-line {
+            width: 48px;
+            height: 2px;
+            background: #d9bd80;
+            margin-top: 20px;
+        }
+
+        .story-heading {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(43px, 5vw, 62px);
+            line-height: 1.13;
+            font-weight: 400;
+            margin: 0 0 22px;
+        }
+
+        .story-heading em {
+            color: #e5cf9f;
+            font-weight: 400;
+        }
+
+        .story-description {
+            font-size: 16px;
+            line-height: 1.9;
+            color: rgba(255,255,255,.82);
+            max-width: 370px;
+        }
+
+        .story-bottom {
+            font-size: 12px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: rgba(255,255,255,.72);
+        }
+
+        .login-form-area {
+            padding: 75px 70px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background: #fffefa;
+        }
+
+        .form-kicker {
+            color: #9a7b42;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 17px;
+        }
+
+        .login-form-area h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 43px;
+            line-height: 1.2;
+            font-weight: 500;
+            color: #183b60;
+            margin: 0 0 13px;
+        }
+
+        .form-intro {
+            font-size: 15px;
+            color: #7c8995;
+            line-height: 1.8;
+            margin: 0 0 42px;
+        }
+
+        .guest-form .form-group {
+            margin-bottom: 26px;
+        }
+
+        .guest-form label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: #344b60;
+            margin-bottom: 11px;
+        }
+
+        .guest-form input {
+            width: 100%;
+            padding: 17px 18px;
+            border: 1px solid #dce3e8;
+            border-radius: 8px;
+            background: #fff;
+            color: #203c58;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 15px;
+            outline: none;
+            transition: .25s;
+        }
+
+        .guest-form input:focus {
+            border-color: #356b9a;
+            box-shadow: 0 0 0 4px rgba(53,107,154,.09);
+        }
+
+        .guest-form input::placeholder {
+            color: #a7b1bb;
+        }
+
+        .sign-in-button {
+            width: 100%;
+            padding: 18px;
+            margin-top: 8px;
+            border: none;
+            border-radius: 8px;
+            background: #1d4d78;
+            color: white;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 15px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: .25s;
+        }
+
+        .sign-in-button:hover {
+            background: #123858;
+            transform: translateY(-2px);
+            box-shadow: 0 9px 22px rgba(29,77,120,.2);
+        }
+
+        .register-note {
+            margin-top: 34px;
+            text-align: center;
+            font-size: 14px;
+            color: #89939d;
+        }
+
+        .register-note a {
+            color: #1d4d78;
+            font-weight: 700;
+            text-decoration: none;
+            margin-left: 4px;
+        }
+
+        .register-note a:hover {
+            text-decoration: underline;
+        }
+
+        .back-home {
+            text-align: center;
+            margin-top: 38px;
+            color: #9a7b42;
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .back-home:hover {
+            color: #1d4d78;
+        }
+
+        @media (max-width: 850px) {
+            .login-scene {
+                padding: 20px;
+            }
+
+            .login-shell {
+                max-width: 550px;
+                grid-template-columns: 1fr;
+            }
+
+            .login-story {
+                min-height: 280px;
+                padding: 38px;
+            }
+
+            .story-heading {
+                font-size: 42px;
+                margin-top: 40px;
+            }
+
+            .story-description {
+                margin-bottom: 25px;
+            }
+
+            .login-form-area {
+                padding: 48px 38px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .login-scene {
+                padding: 12px;
+            }
+
+            .login-form-area {
+                padding: 38px 24px;
+            }
+
+            .login-form-area h1 {
+                font-size: 35px;
+            }
+
+            .login-error {
+                color: #b42318;
+                background-color: #fef3f2;
+                border: 1px solid #fecdca;
+                padding: 12px 15px;
+                border-radius: 8px;
+                font-size: 14px;
+                margin-bottom: 18px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <main class="login-scene">
+        <div class="login-shell">
+
+            <section class="login-story">
+                <div class="story-top">
+                    <div class="story-logo">
+                        <span class="breezy">Breezy</span>
+                        <span class="palms">Palms</span>
+                    </div>
+                    <div class="story-line"></div>
+                </div>
+
+                <div class="story-middle">
+                    <h2 class="story-heading">
+                        A stay to<br>
+                        <em>remember.</em>
+                    </h2>
+
+                    <p class="story-description">
+                        Discover thoughtful hospitality, relaxing spaces
+                        and the comfort of feeling right at home.
+                    </p>
+                </div>
+
+                <div class="story-bottom">
+                    Your stay begins here · Goa, India
+                </div>
+            </section>
+
+            <section class="login-form-area">
+                <span class="form-kicker">Guest Access</span>
+
+                <h1>Welcome back</h1>
+
+                <p class="form-intro">
+                    Sign in to continue your journey with Breezy Palms
+                    and manage your reservations.
+                </p>
+
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="login-error">{{ message }}</div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+
+                <form class="guest-form" method="POST" action="#">
+                    <div class="form-group">
+                        <label for="email">Email address</label>
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            placeholder="you@example.com"
+                            required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="Enter your password"
+                            required>
+                    </div>
+
+                    <button type="submit" class="sign-in-button">
+                        SIGN IN
+                    </button>
+                </form>
+
+                <p class="register-note">
+                    New here?
+                    <a href="{{ url_for('guest_register') }}">Create an account</a>
+                </p>
+
+                <a href="{{ url_for('home') }}" class="back-home">
+                    ← Return to homepage
+                </a>
+            </section>
+
+        </div>
+    </main>
+
+</body>
+</html>

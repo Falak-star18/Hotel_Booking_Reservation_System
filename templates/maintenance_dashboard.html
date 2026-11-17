@@ -1,0 +1,218 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maintenance Management | Breezy Palms</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+<div class="housekeeping-layout">
+
+    <!-- SIDEBAR -->
+    <aside class="housekeeping-sidebar">
+
+        <div class="sidebar-brand">
+            <h2>OUR HOTEL</h2>
+        </div>
+
+        <nav class="sidebar-navigation">
+
+            <a href="{{ url_for('admin_dashboard') }}"
+               class="sidebar-link">
+                <span>⌂</span>
+                Dashboard
+            </a>
+
+            <a href="{{ url_for('housekeeping_dashboard') }}"
+               class="sidebar-link">
+                <span>▤</span>
+                Housekeeping
+            </a>
+
+            <a href="{{ url_for('maintenance_dashboard') }}"
+               class="sidebar-link active">
+                <span>⚙</span>
+                Maintenance
+            </a>
+
+        </nav>
+
+        <div class="sidebar-logout">
+            <a href="{{ url_for('staff_logout') }}">
+                Logout
+            </a>
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN CONTENT -->
+    <main class="housekeeping-main">
+
+        <header class="housekeeping-header">
+
+            <div>
+                <h1>Maintenance Management</h1>
+                <p>Monitor and manage hotel maintenance issues.</p>
+            </div>
+
+            <div class="housekeeping-profile">
+                <strong>{{ session.get('full_name') }}</strong>
+                <span>{{ session.get('role') }}</span>
+            </div>
+
+        </header>
+
+
+        <!-- SUMMARY CARDS -->
+        <section class="housekeeping-stats">
+
+            <div class="housekeeping-stat-card">
+                <span>Total Reports</span>
+                <h2>{{ total_reports }}</h2>
+            </div>
+
+            <div class="housekeeping-stat-card">
+                <span>Reported</span>
+                <h2>{{ reported_count }}</h2>
+            </div>
+
+            <div class="housekeeping-stat-card">
+                <span>In Progress</span>
+                <h2>{{ in_progress_count }}</h2>
+            </div>
+
+            <div class="housekeeping-stat-card">
+                <span>Resolved</span>
+                <h2>{{ resolved_count }}</h2>
+            </div>
+
+        </section>
+
+
+        <!-- MAINTENANCE REPORTS TABLE -->
+        <section class="housekeeping-room-panel">
+
+            <div class="housekeeping-panel-heading">
+                <div>
+                    <h2>Maintenance Reports</h2>
+                    <p>View and update reported room issues.</p>
+                </div>
+            </div>
+
+
+            <div class="housekeeping-table-wrapper">
+
+                <table class="housekeeping-table">
+
+                    <thead>
+                        <tr>
+                            <th>Report ID</th>
+                            <th>Room</th>
+                            <th>Issue Description</th>
+                            <th>Reported By</th>
+                            <th>Reported Date</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+
+
+                    <tbody>
+
+                        {% for report in maintenance_reports %}
+
+                        <tr>
+
+                            <td>{{ report.report_id }}</td>
+
+                            <td>{{ report.room_number }}</td>
+
+                            <td>{{ report.issue_description }}</td>
+
+                            <td>{{ report.reported_by_name }}</td>
+
+                            <td>{{ report.reported_at }}</td>
+
+                            <td>
+                                <span class="reservation-status
+                                    {{ report.maintenance_status|lower|replace(' ', '-') }}">
+                                    {{ report.maintenance_status }}
+                                </span>
+                            </td>
+
+                            <td>
+
+                                {% if report.maintenance_status == 'Reported' %}
+
+                                    <form action="{{ url_for('update_maintenance_status', report_id=report.report_id) }}"
+                                          method="POST">
+
+                                        <input type="hidden"
+                                               name="maintenance_status"
+                                               value="In Progress">
+
+                                        <button type="submit"
+                                                class="checkin-button">
+                                            Start Work
+                                        </button>
+
+                                    </form>
+
+                                {% elif report.maintenance_status == 'In Progress' %}
+
+                                    <form action="{{ url_for('update_maintenance_status', report_id=report.report_id) }}"
+                                          method="POST"
+                                          onsubmit="return confirm('Mark this maintenance issue as resolved?');">
+
+                                        <input type="hidden"
+                                               name="maintenance_status"
+                                               value="Resolved">
+
+                                        <button type="submit"
+                                                class="checkout-button">
+                                            Mark Resolved
+                                        </button>
+
+                                    </form>
+
+                                {% else %}
+
+                                    <span>Completed</span>
+
+                                {% endif %}
+
+                            </td>
+
+                        </tr>
+
+                        {% else %}
+
+                        <tr>
+                            <td colspan="7" class="empty-table">
+                                No maintenance reports found.
+                            </td>
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+</body>
+</html>

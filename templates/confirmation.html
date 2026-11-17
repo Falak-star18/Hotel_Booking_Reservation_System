@@ -1,0 +1,187 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Booking Details | Breezy Palms</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="logo">
+            <span class="breezy">Breezy</span>
+            <span class="palms">Palms</span>
+        </div>
+        <a href="/">Home</a>
+    </nav>
+
+    <!-- Pending Booking Section -->
+    <section class="confirmation-section">
+
+        <div class="confirmation-card">
+
+            <div class="success-icon">✓</div>
+
+            <h1>Booking Details Saved!</h1>
+
+            <p class="confirmation-message">
+                Your booking details have been saved successfully.
+                Complete the payment within the time limit below
+                to confirm your reservation.
+            </p>
+
+            <!-- Booking Reference -->
+            <div class="booking-reference">
+                <p>YOUR BOOKING REFERENCE</p>
+                <h2>{{ booking_reference }}</h2>
+                <p>Please keep this reference for future communication.</p>
+            </div>
+
+            <!-- Payment Status -->
+            <div class="confirmation-details">
+                <h2>Payment Information</h2>
+
+                <div class="detail-row">
+                    <span>Payment Status</span>
+                    <strong>Pending</strong>
+                </div>
+
+                <div class="detail-row">
+                    <span>Payment Deadline</span>
+                    <strong>{{ payment_deadline }}</strong>
+                </div>
+
+                <p>
+                    Your selected room is temporarily held for 10 minutes.
+                    If payment is not completed within this period,
+                    the room hold will expire.
+                </p>
+            </div>
+
+            <!-- Stay Details -->
+            <div class="confirmation-details">
+                <h2>Stay Details</h2>
+
+                <div class="detail-row">
+                    <span>Check-in</span>
+                    <strong>{{ checkin_date }}</strong>
+                </div>
+
+                <div class="detail-row">
+                    <span>Check-out</span>
+                    <strong>{{ checkout_date }}</strong>
+                </div>
+
+                <div class="detail-row">
+                    <span>Number of Nights</span>
+                    <strong>{{ number_of_nights }}</strong>
+                </div>
+
+                <div class="detail-row">
+                    <span>Number of Guests</span>
+                    <strong>{{ guests }}</strong>
+                </div>
+            </div>
+
+            <!-- Room Details -->
+            <div class="confirmation-details">
+                <h2>Room Details</h2>
+
+                <div class="detail-row">
+                    <span>Assigned Room</span>
+                    <strong>{{ room_number }}</strong>
+                </div>
+
+                <div class="detail-row">
+                    <span>Room Category</span>
+                    <strong>{{ category_name }}</strong>
+                </div>
+            </div>
+
+            <!-- Primary Guest Details -->
+            <div class="confirmation-details">
+                <h2>Primary Guest Details</h2>
+
+                <div class="detail-row">
+                    <span>Guest Name</span>
+                    <strong>{{ guest_name }}</strong>
+                </div>
+
+                <div class="detail-row">
+                    <span>Email Address</span>
+                    <strong>{{ guest_email }}</strong>
+                </div>
+
+                <div class="detail-row">
+                    <span>Phone Number</span>
+                    <strong>{{ guest_phone }}</strong>
+                </div>
+            </div>
+
+            <!-- Occupant Details -->
+            <div class="confirmation-details">
+                <h2>Occupant Details</h2>
+
+                {% for occupant in occupants %}
+                    <div class="detail-row">
+                        <span>Guest {{ loop.index }}</span>
+                        <strong>
+                            {{ occupant.occupant_name }}
+                            (Age: {{ occupant.age }})
+                        </strong>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <!-- Price Summary -->
+            <div class="confirmation-details price-summary">
+                <h2>Nightly Rate Breakdown</h2>
+
+                {% for rate in nightly_rates %}
+                    <div class="detail-row">
+                        <span>{{ rate.stay_date }}</span>
+                        <strong>
+                            ₹{{ "%.2f"|format(rate.nightly_price) }}
+                        </strong>
+                    </div>
+                {% endfor %}
+
+                <div class="detail-row total-amount">
+                    <span>Total Booking Amount</span>
+                    <strong>
+                        ₹{{ "%.2f"|format(total_amount) }}
+                    </strong>
+                </div>
+            </div>
+
+            <!-- Booking Actions -->
+            <div class="confirmation-actions">
+
+                <a href="{{ url_for('generate_pending_bill', pending_booking_id=pending_booking_id) }}"
+                   class="home-btn"
+                   target="_blank">
+                    Generate Bill (PDF)
+                </a>
+            
+                <a href="{{ url_for('payment_page', pending_booking_id=pending_booking_id) }}"
+                   class="home-btn">
+                    Proceed to Payment
+                </a>
+            
+            </div>
+
+        </div>
+
+    </section>
+
+</body>
+</html>

@@ -1,0 +1,190 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Room Availability | Breezy Palms</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- ---------------------------------------- -->
+    <!-- 1. Navigation Bar -->
+    <!-- ---------------------------------------- -->
+
+    <header class="navbar">
+        <div class="logo">
+            <span class="breezy">Breezy</span>
+            <span class="palms">Palms</span>
+        </div>
+
+        <nav class="nav-links">
+            <a href="/">Home</a>
+            <a href="/#rooms">Rooms</a>
+            <a href="/#facilities">Facilities</a>
+            <a href="/#contact">Contact</a>
+        </nav>
+    </header>
+
+
+    <!-- ---------------------------------------- -->
+    <!-- 2. Availability Results Heading -->
+    <!-- ---------------------------------------- -->
+
+    <section class="availability-page">
+
+        <div class="section-heading">
+            <h2>Room Booking</h2>
+            <p>Here are your submitted booking details.</p>
+        </div>
+
+
+        <!-- ---------------------------------------- -->
+        <!-- 3. Booking Details -->
+        <!-- ---------------------------------------- -->
+
+        <div class="booking-summary">
+
+            <h3>Your Booking Details</h3>
+        
+            <p>Check-in Date: {{ checkin_date }}</p>
+        
+            <p>Check-out Date: {{ checkout_date }}</p>
+        
+            <p>Number of Nights: {{ number_of_nights }}</p>
+        
+            <p>Number of Guests: {{ guests }}</p>
+        
+            <p>Room Category: {{ room_category }}</p>
+
+            <!-- Room Availability Section -->
+
+<div class="availability-results">
+
+    {% if available_room_count > 0 %}
+
+        <h2>Rooms Available!</h2>
+
+        <p>
+            Rooms are available for your selected dates.
+        </p>
+
+    {% else %}
+
+        <h2>No Rooms Available</h2>
+
+        <p>
+            Sorry, no rooms are available in this category
+            for your selected dates.
+        </p>
+
+    {% endif %}
+    {% if available_room_count > 0 %}
+
+    <form action="/reservation" method="POST">
+
+        <input type="hidden" name="checkin_date"
+               value="{{ checkin_date }}">
+
+        <input type="hidden" name="checkout_date"
+               value="{{ checkout_date }}">
+
+        <input type="hidden" name="guests"
+               value="{{ guests }}">
+
+        <input type="hidden" name="category_id"
+               value="{{ category_id }}">
+
+        <input type="hidden" name="total_amount"
+               value="{{ total_amount }}">
+
+               <button type="submit" class="continue-btn">
+                Continue to Reservation
+                <span class="button-arrow">→</span>
+            </button>
+
+    </form>
+
+{% endif %}
+
+</div>
+        
+<!-- ---------------------------------------- -->
+<!-- Date-wise Pricing Breakdown -->
+<!-- ---------------------------------------- -->
+
+<div class="pricing-summary">
+
+    <p>
+        <strong>Base Room Price:</strong>
+        ₹{{ "{:,.2f}".format(base_price) }} / night
+    </p>
+
+    {% set displayed_seasons = [] %}
+
+    {% for rate in nightly_rates %}
+        {% if rate["season_name"] not in displayed_seasons %}
+            {% set _ = displayed_seasons.append(rate["season_name"]) %}
+
+            <p>
+                <strong>Season:</strong>
+                {% if rate["season_name"] == "Peak Season" %}
+                    Peak Season (November to May)
+                {% else %}
+                    Normal Season (June to October)
+                {% endif %}
+            </p>
+        {% endif %}
+    {% endfor %}
+
+    <p class="total-price">
+        <strong>Total Room Price:</strong>
+        ₹{{ "{:,.2f}".format(total_amount) }}
+    </p>
+
+</div>
+        
+        </div>
+
+
+        <!-- ---------------------------------------- -->
+        <!-- 4. Availability Message -->
+        <!-- ---------------------------------------- -->
+
+        <div class="availability-message">
+
+            <h3>Thank You for Your Enquiry!</h3>
+
+            <p>
+                Your booking details have been received successfully.
+                Room availability will be displayed here.
+            </p>
+
+            <a href="/" class="back-home-btn">Back to Home</a>
+
+        </div>
+
+    </section>
+
+
+    <!-- ---------------------------------------- -->
+    <!-- 5. Footer -->
+    <!-- ---------------------------------------- -->
+
+    <footer class="footer">
+        <h2>Breezy Palms</h2>
+        <p>Experience comfort and hospitality by the coast.</p>
+        <p class="copyright">
+            &copy; 2026 Breezy Palms. All Rights Reserved.
+        </p>
+    </footer>
+
+</body>
+</html>

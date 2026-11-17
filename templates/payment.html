@@ -1,0 +1,440 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+    <title>Payment | Breezy Palms</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6f9;
+            color: #172b45;
+        }
+
+        .navbar {
+            background: #102944;
+            color: white;
+            padding: 20px 7%;
+            font-size: 30px;
+            font-weight: bold;
+        }
+
+        .navbar .breezy {
+    color: #FFC928;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+        }
+
+        .navbar .palms {
+    color: #39FF14;
+    font-family: 'Dancing Script', cursive;
+    font-weight: 800;
+    font-size: 30px;
+}
+
+        .page-container {
+            max-width: 950px;
+            margin: 45px auto;
+            padding: 0 20px;
+        }
+
+        .page-heading {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .page-heading h1 {
+            margin-bottom: 8px;
+            font-size: 30px;
+        }
+
+        .page-heading p {
+            color: #68788b;
+        }
+
+        .payment-layout {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 25px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 28px;
+            box-shadow: 0 5px 22px rgba(16, 41, 68, 0.07);
+        }
+
+        .card h2 {
+            font-size: 20px;
+            margin-top: 0;
+            margin-bottom: 22px;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            margin: 16px 0;
+            font-size: 14px;
+        }
+
+        .detail-row span:first-child {
+            color: #718096;
+        }
+
+        .detail-row span:last-child {
+            text-align: right;
+            font-weight: 600;
+        }
+
+        .amount-box {
+            background: #f0f4f8;
+            border-radius: 10px;
+            padding: 18px;
+            margin-top: 22px;
+        }
+
+        .amount-box span {
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .amount {
+            display: block;
+            font-size: 28px;
+            font-weight: bold;
+            margin-top: 7px;
+            color: #102944;
+        }
+
+        .payment-option {
+            border: 1px solid #dce3eb;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .payment-option.selected {
+            border: 2px solid #173c61;
+            background: #f5f8fc;
+        }
+
+        .payment-option strong {
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .payment-option small {
+            color: #718096;
+        }
+
+        .coming-soon {
+            margin-left: auto;
+            font-size: 11px;
+            color: #8793a2;
+            white-space: nowrap;
+        }
+
+        .demo-notice {
+            background: #fff7e8;
+            border: 1px solid #f2dfb8;
+            color: #805b19;
+            border-radius: 9px;
+            padding: 13px;
+            font-size: 13px;
+            line-height: 1.5;
+            margin-top: 20px;
+        }
+
+        .qr-section {
+            text-align: center;
+            margin-top: 25px;
+            padding: 20px;
+            background: #fafbfd;
+            border: 1px dashed #cbd5e1;
+            border-radius: 12px;
+        }
+
+        .qr-section p {
+            color: #718096;
+            font-size: 13px;
+        }
+
+        .pay-button {
+            display: block;
+            width: 100%;
+            margin-top: 22px;
+            padding: 16px;
+            border: none;
+            border-radius: 30px;
+            background: #102944;
+            color: white;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .failure-button {
+    background-color: #dc3545;
+    color: white;
+    margin-top: 12px;
+}
+
+.failure-button:hover {
+    background-color: #b02a37;
+}
+
+        .pay-button:hover {
+            background: #1d4268;
+        }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 18px;
+            color: #52657a;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        @media (max-width: 700px) {
+            .payment-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .page-container {
+                margin: 25px auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="navbar">
+        <span class="breezy">Breezy</span>
+        <span class="palms">Palms</span>
+    </div>
+
+    <div class="page-container">
+
+        <div class="page-heading">
+            <h1>Complete Your Payment</h1>
+            <p>Your booking is awaiting payment confirmation.</p>
+        
+            <div id="paymentCountdown"
+                 style="margin-top: 15px; color: #dc3545; font-size: 18px; font-weight: bold;">
+                Time Remaining: <span id="countdown">10:00</span>
+            </div>
+        </div>
+
+        <div class="payment-layout">
+
+            <div class="card">
+                <h2>Booking Summary</h2>
+
+                <div class="detail-row">
+                    <span>Booking Reference</span>
+                    <span>{{ booking.booking_reference }}</span>
+                </div>
+
+                <div class="detail-row">
+                    <span>Guest</span>
+                    <span>{{ guest_name }}</span>
+                </div>
+
+                <div class="detail-row">
+                    <span>Room Number</span>
+                    <span>{{ booking.room_number }}</span>
+                </div>
+
+                <div class="detail-row">
+                    <span>Room Category</span>
+                    <span>{{ booking.category_name }}</span>
+                </div>
+
+                <div class="amount-box">
+                    <span>Total Amount Payable</span>
+                    <strong class="amount">
+                        ₹{{ "%.2f"|format(booking.total_amount) }}
+                    </strong>
+                </div>
+
+                <div class="demo-notice">
+                    This is a simulated payment system developed for
+                    project demonstration. No real money will be transferred.
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>Select Payment Method</h2>
+
+                <div class="payment-option selected">
+                    <input type="radio" name="payment_method" id="upiOption" value="UPI">
+                    <div>
+                        <strong>UPI / QR Code</strong>
+                        <small>Simulated UPI payment</small>
+                    </div>
+                </div>
+
+                <div class="payment-option">
+                    <input type="radio" disabled>
+                    <div>
+                        <strong>Debit Card</strong>
+                        <small>Card payment</small>
+                    </div>
+                    <span class="coming-soon">Coming Soon</span>
+                </div>
+
+                <div class="payment-option">
+                    <input type="radio" disabled>
+                    <div>
+                        <strong>Credit Card</strong>
+                        <small>Card payment</small>
+                    </div>
+                    <span class="coming-soon">Coming Soon</span>
+                </div>
+
+                <div class="payment-option">
+                    <input type="radio" disabled>
+                    <div>
+                        <strong>Net Banking</strong>
+                        <small>Online banking</small>
+                    </div>
+                    <span class="coming-soon">Coming Soon</span>
+                </div>
+
+                <div class="qr-section" id="upiQrSection" style="display: none;">
+                    <strong>Demo QR Code</strong>
+                
+                    <img
+                        src="{{ url_for('pending_qr', pending_booking_id=booking.pending_booking_id) }}"
+                        alt="Simulated UPI Payment QR Code"
+                        style="width: 180px; height: 180px; object-fit: contain; margin: 15px auto; display: block;"
+                    >
+                
+                    <p>This is a simulated payment QR code. No real payment will be made.</p>
+                </div>
+
+                <form action="{{ url_for('process_payment', pending_booking_id=booking.pending_booking_id) }}"
+                      method="POST">
+
+                     <button type="submit"
+                             name="payment_result"
+                             value="Successful"
+                             class="pay-button">
+                         Simulate Successful Payment
+                     </button>
+
+                    <button type="submit"
+                            name="payment_result"
+                            value="Failed"
+                            class="pay-button failure-button">
+                        Simulate Failed Payment
+                   </button>
+
+                </form>
+
+                <a href="{{ url_for('generate_pending_bill', pending_booking_id=booking.pending_booking_id) }}"
+                   class="back-link" target="_blank">
+                    View Booking Bill (PDF)
+                </a>
+            </div>
+
+        </div>
+    </div>
+
+    <div id="expiryDialog"
+     style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 9999; justify-content: center; align-items: center;">
+
+    <div style="background: white; padding: 35px; border-radius: 15px; text-align: center; max-width: 400px; width: 90%;">
+
+        <h2 style="color: #dc3545; margin-top: 0;">
+            BOOKING EXPIRED
+        </h2>
+
+        <p style="color: #52657a; line-height: 1.6;">
+            Your 10-minute payment window has expired.
+            Your temporary room hold has been released.
+            Please make a new booking.
+        </p>
+
+        <a href="/"
+           style="display: inline-block; background: #102944; color: white; text-decoration: none; border: none; padding: 12px 30px; border-radius: 25px; cursor: pointer; font-weight: bold;">
+            OK
+        </a>
+
+    </div>
+</div>
+
+<script>
+    // UPI QR code display
+    const upiOption = document.getElementById("upiOption");
+    const qrSection = document.getElementById("upiQrSection");
+
+    qrSection.style.display = "none";
+
+    upiOption.addEventListener("change", function () {
+        if (this.checked) {
+            qrSection.style.display = "block";
+        }
+    });
+
+    // Payment countdown
+    const expiryTime = new Date(
+        "{{ booking.expires_at }}".replace(" ", "T")
+    ).getTime();
+
+    const countdownDisplay = document.getElementById("countdown");
+    const expiryDialog = document.getElementById("expiryDialog");
+
+    let expiryHandled = false;
+
+    function updateCountdown() {
+        const remaining = expiryTime - Date.now();
+
+        if (remaining <= 0) {
+            countdownDisplay.textContent = "00:00";
+
+            if (!expiryHandled) {
+                expiryHandled = true;
+                expiryDialog.style.display = "flex";
+
+                document.querySelectorAll(".pay-button").forEach(button => {
+                    button.disabled = true;
+                });
+
+                fetch("/expire-pending-booking/{{ booking.pending_booking_id }}", {
+                    method: "POST"
+                });
+            }
+
+            return;
+        }
+
+        const minutes = Math.floor(remaining / 60000);
+        const seconds = Math.floor((remaining % 60000) / 1000);
+
+        countdownDisplay.textContent =
+            String(minutes).padStart(2, "0") + ":" +
+            String(seconds).padStart(2, "0");
+    }
+
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+</script>
+
+</body>
+</html>

@@ -1,0 +1,93 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Bookings | Breezy Palms</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+<main class="admin-dashboard">
+
+    <div class="dashboard-heading">
+        <div>
+            <h1>My Bookings</h1>
+            <p>Welcome, {{ guest_name }}. View and manage your reservations.</p>
+        </div>
+
+        <a href="{{ url_for('home') }}" class="my-bookings-home-link">
+            Back to Home
+        </a>
+    </div>
+
+    <section class="dashboard-panel">
+
+        <h2>Your Reservations</h2>
+
+        <div class="table-container">
+            <table class="dashboard-table">
+
+                <thead>
+                    <tr>
+                        <th>Booking Reference</th>
+                        <th>Room</th>
+                        <th>Category</th>
+                        <th>Check-in</th>
+                        <th>Check-out</th>
+                        <th>Guests</th>
+                        <th>Total Amount</th>
+                        <th>Booking Status</th>
+                        <th>Payment Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for booking in bookings %}
+                    <tr>
+                        <td>{{ booking.booking_reference }}</td>
+                        <td>{{ booking.room_number }}</td>
+                        <td>{{ booking.category_name }}</td>
+                        <td>{{ booking.checkin_date }}</td>
+                        <td>{{ booking.checkout_date }}</td>
+                        <td>{{ booking.number_of_guests }}</td>
+                        <td>₹{{ "%.2f"|format(booking.total_amount) }}</td>
+                        <td>{{ booking.booking_status }}</td>
+                        <td>{{ booking.payment_status }}</td>
+                        <td>
+                            {% if booking.booking_status == 'Confirmed'
+                                  and booking.payment_status == 'Successful' %}
+                                <form method="POST"
+                                      action="{{ url_for('cancel_booking', reservation_id=booking.reservation_id) }}"
+                                      onsubmit="return confirm('Are you sure you want to cancel this booking?');">
+                                    <button type="submit" class="cancel-booking-btn">
+                                        Cancel Booking
+                                    </button>
+                                </form>
+                            {% else %}
+                                —
+                            {% endif %}
+                        </td>
+                    </tr>
+
+                    {% else %}
+                    <tr>
+                        <td colspan="10">
+                            You haven't made any reservations yet.
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+
+            </table>
+        </div>
+
+    </section>
+
+</main>
+
+</body>
+</html>
